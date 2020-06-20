@@ -20,6 +20,16 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group hidden {{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label for="email">E-mail: <span class='has-error'>*</span></label>
+                                <input type="email" name="email" id="email" class="form-control" value="{{ old('email') ?? '' }}">
+
+                                @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                                @endif
+                            </div>
                             <div class="form-group {{ $errors->has('toBuy') ? ' has-error' : '' }}">
                                 <label for="toBuy">Amount you want to buy: <span class='has-error'>*</span></label>
                                 <input type="text" name="toBuy" id="toBuy" class="form-control" value="{{ old('toBuy') ?? '' }}">
@@ -82,6 +92,12 @@
             $('#currency').change(function(){
                 let curr = parseInt($(this).val());
                 let amount = $('#toBuy').val();
+
+                if(curr == 2) {
+                    $('.hidden').slideDown();
+                } else {
+                    $('.hidden').slideUp();
+                }
               
                 if(amount) {
                     $.ajax({
