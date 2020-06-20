@@ -19,7 +19,7 @@ class ExchangeController extends Controller
     {
         $currencies = Currency::all();
 
-        // set API Endpoint and access key (and any options of your choice)
+        /*
         $endpoint = 'live';
         $access_key = '82f1f79877a70fe09ec42e1485e6b79b';
         
@@ -38,6 +38,7 @@ class ExchangeController extends Controller
             $currency = Currency::where('name', $name)
                         ->update(['rate' => $value]);
         }
+        */
 
         return view('pages.exchange.index', [
             'currencies' => $currencies
@@ -62,7 +63,10 @@ class ExchangeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'amount' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
+            'currency' => ['exists:currencies,id']
+        ]);
     }
 
     /**
@@ -108,5 +112,24 @@ class ExchangeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function calculate(Request $request)
+    {
+        $data = $request->all();
+
+        $currency = Currency::find($data['currency']);
+
+        $surcharge = (float)$currency->surcharge;
+        $discount = (float)$currency->discount;
+
+        $calculation = (float)$data['amount'] / (float)$currency->rate;
+    
+        $calculation = $surcharge ? (float)$calculation + ((float)$calculation * (float)$surcharge/100) : $calculation;
+        $calculation = $discount ? (float)$calculation - ((float)$calculation * (float)$discount/100) : $calculation;
+        
+        $formated = number_format($calculation, 2, '.', ',');
+        
+        return $formated;
     }
 }

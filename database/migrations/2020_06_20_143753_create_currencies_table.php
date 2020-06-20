@@ -18,6 +18,7 @@ class CreateCurrenciesTable extends Migration
             $table->string('name');
             $table->float('discount')->default(0);
             $table->float('rate');
+            $table->float('surcharge');
             $table->timestamps();
         });
     }

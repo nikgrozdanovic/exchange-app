@@ -8,4 +8,5 @@ Route::get('/', function() {
 
 Route::namespace('Exchange')->group(function(){
     Route::get('/exchange', 'ExchangeController@index')->name('exchange.index');
+    Route::post('/exchange/calculate', 'ExchangeController@calculate')->name('exchange.calculate');
 });
