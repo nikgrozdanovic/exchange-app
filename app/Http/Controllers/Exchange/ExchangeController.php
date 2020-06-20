@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Exchange;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 use App\Models\Currency;
 use App\Models\Order;
+use App\Mail\Order as MailOrder;
 
 class ExchangeController extends Controller
 {
@@ -64,11 +66,10 @@ class ExchangeController extends Controller
      */
     public function store(Request $request)
     {
-        
         $request->validate([
             'toBuy' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
             'currency' => ['exists:currencies,id'],
-            'toPay' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/']
+            'toPay' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
         ]);
 
         $data = $request->all();
@@ -81,7 +82,7 @@ class ExchangeController extends Controller
         $surcharge_amount = (float)$data['toBuy'] * ((float)$surcharge/100);
         $discount_amount = (float)$data['toPay'] * (float)$discount/(100+(float)$discount);
       
-        Order::create([
+        $order = Order::create([
             'currency_id' => $data['currency'],
             'exchange_rate' => $currency->rate,
             'surcharge_percent' => $currency->surcharge,
@@ -91,7 +92,13 @@ class ExchangeController extends Controller
             'discount_percent' => $currency->discount,
             'discount_amount' => $discount_amount
         ]);
-       
+
+        if($data['email']) {
+            Mail::to($data['email'])
+            ->send(new MailOrder($order));
+        }
+        
+
         return redirect()->to(route('index'))->with('status', 'You have succesefully purchased ' . $data['toBuy'] . $currency->name . '.');
     }
 

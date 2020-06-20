@@ -16,4 +16,9 @@ class Order extends Model
         'discount_percent',
         'discount_amount'
     ];
+
+    public function currency()
+    {
+        return $this->hasOne('App\Models\Currency', 'id', 'currency_id');
+    }
 }
