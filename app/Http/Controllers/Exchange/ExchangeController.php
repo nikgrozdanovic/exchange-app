@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use App\Models\Currency;
+use App\Models\Order;
 
 class ExchangeController extends Controller
 {
@@ -63,10 +64,35 @@ class ExchangeController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
-            'amount' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
-            'currency' => ['exists:currencies,id']
+            'toBuy' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
+            'currency' => ['exists:currencies,id'],
+            'toPay' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/']
         ]);
+
+        $data = $request->all();
+
+        $currency = Currency::find($data['currency']);
+
+        $surcharge = (float)$currency->surcharge;
+        $discount = (float)$currency->discount;
+
+        $surcharge_amount = (float)$data['toBuy'] * ((float)$surcharge/100);
+        $discount_amount = (float)$data['toPay'] * (float)$discount/(100+(float)$discount);
+      
+        Order::create([
+            'currency_id' => $data['currency'],
+            'exchange_rate' => $currency->rate,
+            'surcharge_percent' => $currency->surcharge,
+            'surcharge_amount' => $surcharge_amount,
+            'purchased_amount' => $data['toBuy'],
+            'usd_amount' => $data['toPay'],
+            'discount_percent' => $currency->discount,
+            'discount_amount' => $discount_amount
+        ]);
+       
+        return redirect()->to(route('index'))->with('status', 'You have succesefully purchased ' . $data['toBuy'] . $currency->name . '.');
     }
 
     /**
