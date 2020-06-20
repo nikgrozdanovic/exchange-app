@@ -40,3 +40,7 @@
 .m-b-md {
     margin-bottom: 30px;
 }
+
+.has-error {
+    color:red;
+}

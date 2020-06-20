@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <form action="#" method="POST">
+        <form action="{{ route('exchange.store') }}" method="POST">
             @csrf
             <div class="row justify-content-center">
                 <div class="col-md-8">
@@ -16,13 +16,13 @@
                                 <select name="currency" id="currency" class="form-control">
                                     <option value="0">Choose a currency</option>
                                     @foreach ($currencies as $currency)
-                                        <option value='{{ $currency->id }}'>{{$currency->name}}</option>
+                                        <option value='{{ $currency->id }}' @if(old('currency') == $currency->id) selected='selected' @endif)>{{$currency->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group {{ $errors->has('toBuy') ? ' has-error' : '' }}">
-                                <label for="toBuy">Amount you want to buy:</label>
-                                <input type="text" name="toBuy" id="toBuy" class="form-control">
+                                <label for="toBuy">Amount you want to buy: <span class='has-error'>*</span></label>
+                                <input type="text" name="toBuy" id="toBuy" class="form-control" value="{{ old('toBuy') ?? '' }}">
 
                                 @if ($errors->has('toBuy'))
                                 <span class="help-block">
@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-group {{ $errors->has('toPay') ? ' has-error' : '' }}">
                                 <label for="toPay">Amount to pay:</label>
-                                <input type="text" name="toPay" id="toPay" class="form-control">
+                                <input type="text" name="toPay" id="toPay" class="form-control" value="{{ old('toPay') ?? '' }}">
 
                                 @if ($errors->has('toPay'))
                                 <span class="help-block">
@@ -45,7 +45,7 @@
                     <br>
                     <div class="card">
                         <div class="card-body">
-                            <button type="submit" class="btn btn-danger float-right" id="purchase" name="purchase">
+                            <button type="submit" class="btn btn-danger float-right" id="purchase">
                                 Purchase
                             </button>
                         </div>

@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="content">
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     <h1>Welcome to the Exchange app</h1>
     <div class="card text-white bg-default">
         <div class="card-body">
