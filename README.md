@@ -29,6 +29,10 @@ After setting up your database, apply the migrations so you get all the neccessa
 ```
 php artisan migrate
 ```
+To populate your your currencies tables run:
+```
+php artisan db:seed
+```
 Finally, to start your local server run:
 ```
 php artisan serve
