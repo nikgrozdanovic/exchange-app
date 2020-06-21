@@ -20,7 +20,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group hidden {{ $errors->has('email') ? ' has-error' : '' }}">
+                            <div class="form-group @if(old('currency') != 2) hidden @endif {{ $errors->has('email') ? ' has-error' : '' }}" id="hidden">
                                 <label for="email">E-mail: <span class='has-error'>*</span></label>
                                 <input type="email" name="email" id="email" class="form-control" value="{{ old('email') ?? '' }}">
 
@@ -94,9 +94,10 @@
                 let amount = $('#toBuy').val();
 
                 if(curr == 2) {
-                    $('.hidden').slideDown();
+                    $('#hidden').slideDown();
                 } else {
-                    $('.hidden').slideUp();
+                    $('#hidden').slideUp();
+                    $('#hidden').val('');
                 }
               
                 if(amount) {
