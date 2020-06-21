@@ -20,7 +20,6 @@ class ExchangeController extends Controller
      */
     public function index()
     {
-        /*
         $endpoint = 'live';
         $access_key = '82f1f79877a70fe09ec42e1485e6b79b';
         
@@ -39,7 +38,7 @@ class ExchangeController extends Controller
             $currency = Currency::where('name', $name)
                         ->update(['rate' => $value]);
         }
-        */
+        
 
         $currencies = Currency::all();
 
