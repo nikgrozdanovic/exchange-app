@@ -18,24 +18,24 @@ class CurrencyController extends Controller
     {
 
         
-        // $endpoint = 'live';
-        // $access_key = '82f1f79877a70fe09ec42e1485e6b79b';
+        $endpoint = 'live';
+        $access_key = '82f1f79877a70fe09ec42e1485e6b79b';
         
-        // // Initialize CURL:
-        // $ch = curl_init('http://apilayer.net/api/'.$endpoint.'?access_key='.$access_key.'&currencies=JPY,GBP,EUR&source=USD&format=1');
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Initialize CURL:
+        $ch = curl_init('http://apilayer.net/api/'.$endpoint.'?access_key='.$access_key.'&currencies=JPY,GBP,EUR&source=USD&format=1');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-        // // Store the data:
-        // $json = curl_exec($ch);
-        // curl_close($ch);
-        // $exchangeRates = json_decode($json, true);
+        // Store the data:
+        $json = curl_exec($ch);
+        curl_close($ch);
+        $exchangeRates = json_decode($json, true);
         
-        // foreach($exchangeRates['quotes'] as $key=>$value)
-        // {
-        //     $name = Str::substr($key, 3);
-        //     $currency = Currency::where('name', $name)
-        //                 ->update(['rate' => $value]);
-        // }
+        foreach($exchangeRates['quotes'] as $key=>$value)
+        {
+            $name = Str::substr($key, 3);
+            $currency = Currency::where('name', $name)
+                        ->update(['rate' => $value]);
+        }
         
 
         $currencies = Currency::all();
