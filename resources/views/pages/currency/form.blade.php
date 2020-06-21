@@ -14,10 +14,22 @@
                             <div class="form-group {{ $errors->has('discount') ? ' has-error' : '' }}">
                                 <label for="discount">Discount</label>
                                 <input type="discount" name="discount" id="discount" class="form-control" value="{{ old('discount', $currency->discount ?? 0) }}">
+
+                                @if ($errors->has('discount'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('discount') }}</strong>
+                                </span>
+                                @endif
                             </div>
                             <div class="form-group {{ $errors->has('surcharge') ? ' has-error' : '' }}">
                                 <label for="surcharge">Surcharge</label>
                                 <input type="surcharge" name="surcharge" id="surcharge" class="form-control" value="{{ old('surcharge', $currency->surcharge ?? 0) }}">
+                                
+                                @if ($errors->has('surcharge'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('surcharge') }}</strong>
+                                </span>
+                                @endif
                             </div>
                         </div>
                     </div>

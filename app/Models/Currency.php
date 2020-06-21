@@ -9,6 +9,7 @@ class Currency extends Model
     protected $fillable = [
         'name',
         'discount',
-        'rate'
+        'rate',
+        'surcharge'
     ];
 }
