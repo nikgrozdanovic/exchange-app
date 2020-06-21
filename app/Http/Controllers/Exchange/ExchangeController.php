@@ -66,9 +66,9 @@ class ExchangeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'toBuy' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
+            'toBuy' => 'required|numeric|between:0,999999.99',
             'currency' => ['exists:currencies,id'],
-            'toPay' => ['required', 'regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
+            'toPay' => 'required|numeric|between:0,999999.99',
         ]);
 
         $data = $request->all();
@@ -160,7 +160,7 @@ class ExchangeController extends Controller
         $calculation = $surcharge ? (float)$calculation + ((float)$calculation * (float)$surcharge/100) : $calculation;
         $calculation = $discount ? (float)$calculation - ((float)$calculation * (float)$discount/100) : $calculation;
         
-        $formated = number_format($calculation, 2, '.', ',');
+        $formated = number_format($calculation, 2, '.', '');
         
         return $formated;
     }

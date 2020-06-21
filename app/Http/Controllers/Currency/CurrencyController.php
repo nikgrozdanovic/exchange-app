@@ -100,8 +100,8 @@ class CurrencyController extends Controller
     public function update(Currency $currency, Request $request)
     {
         $request->validate([
-            'discount' => ['regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/'],
-            'surcharge' => ['regex:/^(?=.+)(?:[1-9]\d*|0)?(?:\.\d+)?$/']
+            'discount' => 'required|numeric|between:0,100',
+            'surcharge' => 'required|numeric|between:0,100'
         ]);
 
         $data = $request->all();
