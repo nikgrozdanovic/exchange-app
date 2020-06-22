@@ -26,7 +26,7 @@ Followed by
 php artisan db:seed
 ```
 
-Before launching the app, in order to test mail sending change your `env` file and put your own [Mailtrap](https://mailtrap.io/)  parameters.
+Before launching the app, in order to test mail sending change your `env` file and put your own [Mailtrap](https://mailtrap.io/)  (lines 26-33) `.env` file. parameters.
 
 Finally, to start your local server run:
 ```
